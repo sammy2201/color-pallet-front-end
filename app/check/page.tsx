@@ -2,8 +2,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
+interface ApiResponse {
+  message: string; // Match the structure of your API response
+}
+
 export default function Check() {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<ApiResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -13,7 +17,7 @@ export default function Check() {
         setData(response.data); // Set the response data to state
       })
       .catch((err) => {
-        setError("Error fetching data"); // Handle errors
+        setError(`Error fetching data: ${err.message}`);
       });
   }, []);
 
