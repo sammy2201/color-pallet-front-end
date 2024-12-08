@@ -1,0 +1,16 @@
+# Stage 1: Build
+FROM node:20 AS build
+WORKDIR /src
+COPY ./package.json ./package-lock.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+
+# Stage 2: Production
+FROM node:20-slim
+WORKDIR /app
+COPY --from=build /src/.next /app/.next
+COPY ./package.json ./package-lock.json ./
+RUN npm install --only=production
+EXPOSE 3000
+CMD ["npm", "start"]
