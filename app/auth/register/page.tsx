@@ -19,8 +19,7 @@ import {
   FacebookIcon,
   SitemarkIcon,
 } from "../../../components/customIcons";
-
-import { Axios } from "axios";
+import axios from "axios";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -66,33 +65,38 @@ const SignUpContainer = styled(Stack)(({ theme }) => ({
 }));
 
 export default function Register(props: { disableCustomTheme?: boolean }) {
-  const [emailError, setEmailError] = React.useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
-  const [passwordError, setPasswordError] = React.useState(false);
-  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
-  const [firstNameError, setFirstNameError] = React.useState(false);
-  const [firstNameErrorMessage, setFirstNameErrorMessage] = React.useState("");
-  const [lastNameError, setLastNameError] = React.useState(false);
-  const [lastNameErrorMessage, setLastNameErrorMessage] = React.useState("");
+  const [emailError, setEmailError] = useState(false);
+  const [emailErrorMessage, setEmailErrorMessage] = useState("");
+  const [passwordError, setPasswordError] = useState(false);
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+  const [firstNameError, setFirstNameError] = useState(false);
+  const [firstNameErrorMessage, setFirstNameErrorMessage] = useState("");
+  const [lastNameError, setLastNameError] = useState(false);
+  const [lastNameErrorMessage, setLastNameErrorMessage] = useState("");
+  const [phoneNumberError, setPhoneNumberError] = useState(false);
+  const [phoneNumberErrorMessage, setPhoneNumberErrorMessage] = useState("");
 
   // Using Effect to Reset Errors After Hydration
-  React.useEffect(() => {
+  useEffect(() => {
     setEmailError(false);
     setPasswordError(false);
     setFirstNameError(false);
     setLastNameError(false);
+    setPhoneNumberError(false);
   }, []);
 
   const firstNameRef = useRef<HTMLInputElement>(null);
   const lastNameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+  const phoneNumberRef = useRef<HTMLInputElement>(null);
 
   const validateInputs = () => {
     const firstName = firstNameRef.current?.value || "";
     const lastName = lastNameRef.current?.value || "";
     const email = emailRef.current?.value || "";
     const password = passwordRef.current?.value || "";
+    const phoneNumber = phoneNumberRef.current?.value || "";
 
     let isValid = true;
 
@@ -145,21 +149,54 @@ export default function Register(props: { disableCustomTheme?: boolean }) {
       setLastNameErrorMessage("");
     }
 
+    if (!phoneNumber || !/^\+\d{1,3}\d{7,15}$/.test(phoneNumber)) {
+      setPhoneNumberError(true);
+      setPhoneNumberErrorMessage(
+        "Enter a valid phone number with country code (e.g., +46794783778)."
+      );
+      isValid = false;
+    } else {
+      setPhoneNumberError(false);
+      setPhoneNumberErrorMessage("");
+    }
+
     return isValid;
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    if (firstNameError || firstNameError || emailError || passwordError) {
-      event.preventDefault();
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (
+      firstNameError ||
+      firstNameError ||
+      emailError ||
+      passwordError ||
+      phoneNumberError
+    ) {
       return;
     }
     const data = new FormData(event.currentTarget);
-    console.log({
-      name: data.get("name"),
-      lastName: data.get("lastName"),
+    const userData = {
+      first_name: data.get("firstName"),
+      last_name: data.get("lastName"),
       email: data.get("email"),
       password: data.get("password"),
-    });
+      phone_number: data.get("phoneNumber"),
+    };
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/auth/register",
+        userData
+      );
+      if (response.status === 201) {
+        alert("Registration successful! Redirecting...");
+        window.location.href = "/auth/login";
+      } else {
+        alert("Unexpected response. Check backend logs.");
+      }
+    } catch (error) {
+      console.error("Error registering user:", error);
+      alert("Failed to register. Please try again.");
+    }
   };
 
   return (
@@ -228,6 +265,21 @@ export default function Register(props: { disableCustomTheme?: boolean }) {
                 error={emailError}
                 helperText={emailErrorMessage}
                 color={passwordError ? "error" : "primary"}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="firstName">Phone Number</FormLabel>
+              <TextField
+                autoComplete="phoneNumber"
+                name="phoneNumber"
+                inputRef={phoneNumberRef}
+                required
+                fullWidth
+                id="phoneNumber"
+                placeholder="+46 793784891"
+                error={phoneNumberError}
+                helperText={phoneNumberErrorMessage}
+                color={phoneNumberError ? "error" : "primary"}
               />
             </FormControl>
             <FormControl>
