@@ -1,5 +1,6 @@
 import styles from "../styles/page.module.css";
 import Footer from "../components/footer";
+import "../styles/globals.css";
 
 export default function Home() {
   return (

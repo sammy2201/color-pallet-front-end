@@ -9,9 +9,6 @@ import FormControl from "@mui/material/FormControl";
 import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import Stack from "@mui/material/Stack";
-import MuiCard from "@mui/material/Card";
-import { styled } from "@mui/material/styles";
 import {
   GoogleIcon,
   FacebookIcon,
@@ -81,85 +78,86 @@ export default function Login() {
   };
 
   return (
-    <div>
-      <AuthContainer direction="column" justifyContent="space-between">
-        <CssBaseline enableColorScheme />
-        <Card variant="outlined">
-          <SitemarkIcon />
-          <Typography
-            component="h1"
-            variant="h4"
-            sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}>
-            Sign in
-          </Typography>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            <FormControl>
-              <FormLabel htmlFor="email">Email</FormLabel>
-              <TextField
-                required
-                fullWidth
-                id="email"
-                placeholder="your@email.com"
-                name="email"
-                autoComplete="email"
-                inputRef={emailRef}
-                error={emailError}
-                helperText={emailErrorMessage}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel htmlFor="password">Password</FormLabel>
-              <TextField
-                required
-                fullWidth
-                name="password"
-                placeholder="••••••"
-                type="password"
-                inputRef={passwordRef}
-                id="password"
-                autoComplete="current-password"
-                error={passwordError}
-                helperText={passwordErrorMessage}
-              />
-            </FormControl>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              onClick={validateInputs}>
+    <div className="h-screen w-screen flex items-center justify-center bg-gray-900">
+      <div className="">
+        <AuthContainer direction="column" justifyContent="space-between">
+          <CssBaseline enableColorScheme />
+          <Card variant="outlined">
+            <Typography
+              component="h1"
+              variant="h4"
+              sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}>
               Sign in
-            </Button>
-          </Box>
-          <Divider>
-            <Typography sx={{ color: "text.secondary" }}>or</Typography>
-          </Divider>
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            <Button
-              fullWidth
-              variant="outlined"
-              startIcon={<GoogleIcon />}
-              onClick={() => alert("Sign in with Google")}>
-              Sign in with Google
-            </Button>
-            <Button
-              fullWidth
-              variant="outlined"
-              startIcon={<FacebookIcon />}
-              onClick={() => alert("Sign in with Facebook")}>
-              Sign in with Facebook
-            </Button>
-            <Typography sx={{ textAlign: "center" }}>
-              Don't have an account?{" "}
-              <Link href="/auth/register" variant="body2">
-                Sign up
-              </Link>
             </Typography>
-          </Box>
-        </Card>
-      </AuthContainer>
+            <Box
+              component="form"
+              onSubmit={handleSubmit}
+              sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+              <FormControl>
+                <FormLabel htmlFor="email">Email</FormLabel>
+                <TextField
+                  required
+                  fullWidth
+                  id="email"
+                  placeholder="your@email.com"
+                  name="email"
+                  autoComplete="email"
+                  inputRef={emailRef}
+                  error={emailError}
+                  helperText={emailErrorMessage}
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel htmlFor="password">Password</FormLabel>
+                <TextField
+                  required
+                  fullWidth
+                  name="password"
+                  placeholder="••••••"
+                  type="password"
+                  inputRef={passwordRef}
+                  id="password"
+                  autoComplete="current-password"
+                  error={passwordError}
+                  helperText={passwordErrorMessage}
+                />
+              </FormControl>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                onClick={validateInputs}>
+                Sign in
+              </Button>
+            </Box>
+            <Divider>
+              <Typography sx={{ color: "text.secondary" }}>or</Typography>
+            </Divider>
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+              <Button
+                fullWidth
+                variant="outlined"
+                startIcon={<GoogleIcon />}
+                onClick={() => alert("Sign in with Google")}>
+                Sign in with Google
+              </Button>
+              <Button
+                fullWidth
+                variant="outlined"
+                startIcon={<FacebookIcon />}
+                onClick={() => alert("Sign in with Facebook")}>
+                Sign in with Facebook
+              </Button>
+              <Typography sx={{ textAlign: "center" }}>
+                Don't have an account?{" "}
+                <Link href="/auth/register" variant="body2">
+                  Sign up
+                </Link>
+              </Typography>
+            </Box>
+          </Card>
+        </AuthContainer>
+      </div>
     </div>
   );
 }

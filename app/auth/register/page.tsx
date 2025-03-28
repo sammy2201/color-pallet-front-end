@@ -175,17 +175,10 @@ export default function Register(props: { disableCustomTheme?: boolean }) {
   };
 
   return (
-    <div
-      style={{
-        height: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}>
+    <div className="pt-10 pb-10 flex items-center justify-center bg-gray-900">
       <CssBaseline enableColorScheme />
       <AuthContainer direction="column" justifyContent="space-between">
         <Card variant="outlined">
-          <SitemarkIcon />
           <Typography
             component="h1"
             variant="h4"
@@ -201,7 +194,6 @@ export default function Register(props: { disableCustomTheme?: boolean }) {
               gap: 2,
               width: "100%",
               overflowY: "auto", // ✅ Allow scrolling inside form
-              maxHeight: "70vh",
             }}>
             <FormControl>
               <FormLabel htmlFor="firstName">First name</FormLabel>
