@@ -25,10 +25,20 @@ const Container = styled(Stack)(({ theme }) => ({
   },
 }));
 
-interface CardProps {
+interface ContainerProps {
   children: React.ReactNode;
+  direction?: "row" | "column";
+  justifyContent?: string;
 }
 
-export default function AuthContainer({ children }: CardProps) {
-  return <Container>{children}</Container>;
+export default function AuthContainer({
+  children,
+  direction,
+  justifyContent,
+}: ContainerProps) {
+  return (
+    <div style={{ display: "flex", flexDirection: direction, justifyContent }}>
+      {children}
+    </div>
+  );
 }
