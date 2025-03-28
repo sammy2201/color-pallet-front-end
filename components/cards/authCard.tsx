@@ -25,8 +25,9 @@ const StyledCard = styled(MuiCard)(({ theme }) => ({
 
 interface CardProps {
   children: React.ReactNode;
+  variant?: "outlined" | "elevation";
 }
 
-export default function Card({ children }: CardProps) {
-  return <StyledCard>{children}</StyledCard>;
+export default function Card({ children, variant }: CardProps) {
+  return <StyledCard variant={variant}>{children}</StyledCard>;
 }

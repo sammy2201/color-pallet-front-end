@@ -27,7 +27,6 @@ import {
 import Card from "../../../components/cards/authCard";
 import AuthContainer from "../../../components/cards/authContainer";
 
-// const Card = styled(MuiCard)(({ theme }) => ({
 //   display: "flex",
 //   flexDirection: "column",
 //   alignSelf: "center",
@@ -185,7 +184,7 @@ export default function Register(props: { disableCustomTheme?: boolean }) {
       }}>
       <CssBaseline enableColorScheme />
       <AuthContainer direction="column" justifyContent="space-between">
-        <Card>
+        <Card variant="outlined">
           <SitemarkIcon />
           <Typography
             component="h1"
@@ -196,7 +195,14 @@ export default function Register(props: { disableCustomTheme?: boolean }) {
           <Box
             component="form"
             onSubmit={handleSubmit}
-            sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 2,
+              width: "100%",
+              overflowY: "auto", // ✅ Allow scrolling inside form
+              maxHeight: "70vh",
+            }}>
             <FormControl>
               <FormLabel htmlFor="firstName">First name</FormLabel>
               <TextField

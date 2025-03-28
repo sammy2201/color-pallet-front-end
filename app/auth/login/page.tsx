@@ -84,7 +84,7 @@ export default function Login() {
     <div>
       <AuthContainer direction="column" justifyContent="space-between">
         <CssBaseline enableColorScheme />
-        <Card>
+        <Card variant="outlined">
           <SitemarkIcon />
           <Typography
             component="h1"
