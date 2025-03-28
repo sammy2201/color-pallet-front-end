@@ -2,10 +2,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Checkbox from "@mui/material/Checkbox";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
 import FormControl from "@mui/material/FormControl";
 import Link from "@mui/material/Link";
@@ -20,6 +18,7 @@ import {
   SitemarkIcon,
 } from "../../../components/customIcons";
 import axios from "axios";
+import { validateEmail, validatePassword } from "../validate";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -85,33 +84,17 @@ export default function Login() {
     let isValid = true;
 
     //email check
-    if (!email || !/\S+@\S+\.\S+/.test(email)) {
-      setEmailError(true);
-      setEmailErrorMessage("Please enter a valid email address.");
-      isValid = false;
-    } else {
-      setEmailError(false);
-      setEmailErrorMessage("");
-    }
+    const emailValidation = validateEmail(email);
+    setEmailError(!!emailValidation);
+    setEmailErrorMessage(emailValidation);
+    if (emailValidation) isValid = false;
 
     //password check
-    if (
-      !password ||
-      password.length < 8 ||
-      !/[A-Z]/.test(password) || // At least one uppercase letter
-      !/[a-z]/.test(password) || // At least one lowercase letter
-      !/[0-9]/.test(password) || // At least one number
-      !/[!@#$%^&*(),.?":{}|<>]/.test(password) // At least one special character
-    ) {
-      setPasswordError(true);
-      setPasswordErrorMessage(
-        "Password must be at least 8 characters long, include uppercase, lowercase, a number, and a special character."
-      );
-      isValid = false;
-    } else {
-      setPasswordError(false);
-      setPasswordErrorMessage("");
-    }
+    const passwordValidation = validatePassword(password);
+    setPasswordError(!!passwordValidation);
+    setPasswordErrorMessage(passwordValidation);
+    if (passwordValidation) isValid = false;
+
     return isValid;
   };
 

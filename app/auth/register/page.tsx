@@ -20,6 +20,12 @@ import {
   SitemarkIcon,
 } from "../../../components/customIcons";
 import axios from "axios";
+import {
+  validateEmail,
+  validatePassword,
+  validateName,
+  validatePhoneNumber,
+} from "../validate";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -101,64 +107,34 @@ export default function Register(props: { disableCustomTheme?: boolean }) {
     let isValid = true;
 
     //email check
-    if (!email || !/\S+@\S+\.\S+/.test(email)) {
-      setEmailError(true);
-      setEmailErrorMessage("Please enter a valid email address.");
-      isValid = false;
-    } else {
-      setEmailError(false);
-      setEmailErrorMessage("");
-    }
+    const emailValidation = validateEmail(email);
+    setEmailError(!!emailValidation);
+    setEmailErrorMessage(emailValidation);
+    if (emailValidation) isValid = false;
 
     //password check
-    if (
-      !password ||
-      password.length < 8 ||
-      !/[A-Z]/.test(password) || // At least one uppercase letter
-      !/[a-z]/.test(password) || // At least one lowercase letter
-      !/[0-9]/.test(password) || // At least one number
-      !/[!@#$%^&*(),.?":{}|<>]/.test(password) // At least one special character
-    ) {
-      setPasswordError(true);
-      setPasswordErrorMessage(
-        "Password must be at least 8 characters long, include uppercase, lowercase, a number, and a special character."
-      );
-      isValid = false;
-    } else {
-      setPasswordError(false);
-      setPasswordErrorMessage("");
-    }
+    const passwordValidation = validatePassword(password);
+    setPasswordError(!!passwordValidation);
+    setPasswordErrorMessage(passwordValidation);
+    if (passwordValidation) isValid = false;
 
     //first-name check
-    if (!firstName || firstName.length < 1) {
-      setFirstNameError(true);
-      setFirstNameErrorMessage("Name is required.");
-      isValid = false;
-    } else {
-      setFirstNameError(false);
-      setFirstNameErrorMessage("");
-    }
+    const firstNameValidation = validateName(firstName);
+    setFirstNameError(!!firstNameValidation);
+    setFirstNameErrorMessage(firstNameValidation);
+    if (firstNameValidation) isValid = false;
 
     //last-name check
-    if (!lastName || lastName.length < 1) {
-      setLastNameError(true);
-      setLastNameErrorMessage("Name is required.");
-      isValid = false;
-    } else {
-      setLastNameError(false);
-      setLastNameErrorMessage("");
-    }
+    const lastNameValidation = validateName(lastName);
+    setLastNameError(!!lastNameValidation);
+    setLastNameErrorMessage(lastNameValidation);
+    if (lastNameValidation) isValid = false;
 
-    if (!phoneNumber || !/^\+\d{1,3}\d{7,15}$/.test(phoneNumber)) {
-      setPhoneNumberError(true);
-      setPhoneNumberErrorMessage(
-        "Enter a valid phone number with country code (e.g., +46794783778)."
-      );
-      isValid = false;
-    } else {
-      setPhoneNumberError(false);
-      setPhoneNumberErrorMessage("");
-    }
+    //phone-number check
+    const phoneNumberValidation = validatePhoneNumber(phoneNumber);
+    setPhoneNumberError(!!phoneNumberValidation);
+    setPhoneNumberErrorMessage(phoneNumberValidation);
+    if (phoneNumberValidation) isValid = false;
 
     return isValid;
   };
