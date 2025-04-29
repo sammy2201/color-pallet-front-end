@@ -1,320 +1,253 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Checkbox from "@mui/material/Checkbox";
-import CssBaseline from "@mui/material/CssBaseline";
-import Divider from "@mui/material/Divider";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormLabel from "@mui/material/FormLabel";
-import FormControl from "@mui/material/FormControl";
-import Link from "@mui/material/Link";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
 
-import {
-  GoogleIcon,
-  FacebookIcon,
-  SitemarkIcon,
-} from "../../../components/customIcons";
+import React, { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import axios from "axios";
+import { Metadata } from "next";
 import {
   validateEmail,
   validatePassword,
   validateName,
   validatePhoneNumber,
-} from "../validate";
-import Card from "../../../components/cards/authCard";
-import AuthContainer from "../../../components/cards/authContainer";
+} from "../validate"; // adjust the path if needed
 
-//   display: "flex",
-//   flexDirection: "column",
-//   alignSelf: "center",
-//   width: "100%",
-//   overflowY: "auto",
-//   padding: theme.spacing(4),
-//   gap: theme.spacing(2),
-//   margin: "auto",
-//   boxShadow:
-//     "hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px",
-//   [theme.breakpoints.up("sm")]: {
-//     width: "450px",
-//   },
-//   ...theme.applyStyles("dark", {
-//     boxShadow:
-//       "hsla(220, 30%, 5%, 0.5) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.08) 0px 15px 35px -5px",
-//   }),
-// }));
+const Register = () => {
+  const router = useRouter();
 
-// const SignUpContainer = styled(Stack)(({ theme }) => ({
-//   height: "calc((1 - var(--template-frame-height, 0)) * 100dvh)",
-//   minHeight: "100%",
-//   padding: theme.spacing(2),
-//   [theme.breakpoints.up("sm")]: {
-//     padding: theme.spacing(4),
-//   },
-//   "&::before": {
-//     content: '""',
-//     display: "block",
-//     position: "absolute",
-//     zIndex: -1,
-//     inset: 0,
-//     backgroundImage:
-//       "radial-gradient(ellipse at 50% 50%, hsl(210, 100%, 97%), hsl(0, 0%, 100%))",
-//     backgroundRepeat: "no-repeat",
-//     ...theme.applyStyles("dark", {
-//       backgroundImage:
-//         "radial-gradient(at 50% 50%, hsla(210, 100%, 16%, 0.5), hsl(220, 30%, 5%))",
-//     }),
-//   },
-// }));
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+    phoneNumber: "",
+  });
 
-export default function Register(props: { disableCustomTheme?: boolean }) {
-  const [emailError, setEmailError] = useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = useState("");
-  const [passwordError, setPasswordError] = useState(false);
-  const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
-  const [firstNameError, setFirstNameError] = useState(false);
-  const [firstNameErrorMessage, setFirstNameErrorMessage] = useState("");
-  const [lastNameError, setLastNameError] = useState(false);
-  const [lastNameErrorMessage, setLastNameErrorMessage] = useState("");
-  const [phoneNumberError, setPhoneNumberError] = useState(false);
-  const [phoneNumberErrorMessage, setPhoneNumberErrorMessage] = useState("");
+  const [errors, setErrors] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+    phoneNumber: "",
+  });
 
-  // Using Effect to Reset Errors After Hydration
-  useEffect(() => {
-    setEmailError(false);
-    setPasswordError(false);
-    setFirstNameError(false);
-    setLastNameError(false);
-    setPhoneNumberError(false);
-  }, []);
-
-  const firstNameRef = useRef<HTMLInputElement>(null);
-  const lastNameRef = useRef<HTMLInputElement>(null);
-  const emailRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
-  const phoneNumberRef = useRef<HTMLInputElement>(null);
-
-  const validateInputs = () => {
-    const firstName = firstNameRef.current?.value || "";
-    const lastName = lastNameRef.current?.value || "";
-    const email = emailRef.current?.value || "";
-    const password = passwordRef.current?.value || "";
-    const phoneNumber = phoneNumberRef.current?.value || "";
-
-    let isValid = true;
-
-    //email check
-    const emailValidation = validateEmail(email);
-    setEmailError(!!emailValidation);
-    setEmailErrorMessage(emailValidation);
-    if (emailValidation) isValid = false;
-
-    //password check
-    const passwordValidation = validatePassword(password);
-    setPasswordError(!!passwordValidation);
-    setPasswordErrorMessage(passwordValidation);
-    if (passwordValidation) isValid = false;
-
-    //first-name check
-    const firstNameValidation = validateName(firstName);
-    setFirstNameError(!!firstNameValidation);
-    setFirstNameErrorMessage(firstNameValidation);
-    if (firstNameValidation) isValid = false;
-
-    //last-name check
-    const lastNameValidation = validateName(lastName);
-    setLastNameError(!!lastNameValidation);
-    setLastNameErrorMessage(lastNameValidation);
-    if (lastNameValidation) isValid = false;
-
-    //phone-number check
-    const phoneNumberValidation = validatePhoneNumber(phoneNumber);
-    setPhoneNumberError(!!phoneNumberValidation);
-    setPhoneNumberErrorMessage(phoneNumberValidation);
-    if (phoneNumberValidation) isValid = false;
-
-    return isValid;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (
-      firstNameError ||
-      firstNameError ||
-      emailError ||
-      passwordError ||
-      phoneNumberError
-    ) {
-      return;
-    }
-    const data = new FormData(event.currentTarget);
-    const userData = {
-      first_name: data.get("firstName"),
-      last_name: data.get("lastName"),
-      email: data.get("email"),
-      password: data.get("password"),
-      phone_number: data.get("phoneNumber"),
+  const validate = () => {
+    const [firstName = "", lastName = ""] = formData.fullName.trim().split(" ");
+    const nameError = validateName(firstName) || validateName(lastName);
+    const emailError = validateEmail(formData.email);
+    const passwordError = validatePassword(formData.password);
+    const phoneError = validatePhoneNumber(formData.phoneNumber);
+
+    const newErrors = {
+      fullName: nameError,
+      email: emailError,
+      password: passwordError,
+      phoneNumber: phoneError,
     };
+
+    setErrors(newErrors);
+    return Object.values(newErrors).every((e) => e === "");
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validate()) return;
+
+    const [firstName = "", lastName = ""] = formData.fullName.trim().split(" ");
+    const payload = {
+      first_name: firstName,
+      last_name: lastName,
+      email: formData.email,
+      password: formData.password,
+      phone_number: formData.phoneNumber,
+    };
+
     try {
       const response = await axios.post(
-        "http://localhost:3001/auth/register",
-        userData
+        "http://localhost:3002/auth/register",
+        payload
       );
       if (response.status === 201) {
-        alert("Registration successful! Redirecting...");
-        window.location.href = "/auth/login";
+        router.push("/auth/login");
       } else {
         alert("Unexpected response. Check backend logs.");
       }
     } catch (error) {
-      console.error("Error registering user:", error);
-      alert("Failed to register. Please try again.");
+      console.error("Registration failed:", error);
+      alert("Something went wrong. Please try again.");
     }
   };
 
   return (
-    <div className="pt-10 pb-10 flex items-center justify-center bg-gray-900">
-      <CssBaseline enableColorScheme />
-      <AuthContainer direction="column" justifyContent="space-between">
-        <Card variant="outlined">
-          <Typography
-            component="h1"
-            variant="h4"
-            sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}>
-            Sign up
-          </Typography>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 2,
-              width: "100%",
-              overflowY: "auto", // ✅ Allow scrolling inside form
-            }}>
-            <FormControl>
-              <FormLabel htmlFor="firstName">First name</FormLabel>
-              <TextField
-                autoComplete="firstName"
-                name="firstName"
-                inputRef={firstNameRef}
-                required
-                fullWidth
-                id="firstName"
-                placeholder="Jon Snow"
-                error={firstNameError}
-                helperText={firstNameErrorMessage}
-                color={firstNameError ? "error" : "primary"}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel htmlFor="lastName">Last name</FormLabel>
-              <TextField
-                autoComplete="lastName"
-                name="lastName"
-                required
-                fullWidth
-                id="lastName"
-                placeholder="Jon Snow"
-                inputRef={lastNameRef}
-                error={lastNameError}
-                helperText={lastNameErrorMessage}
-                color={lastNameError ? "error" : "primary"}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel htmlFor="email">Email</FormLabel>
-              <TextField
-                required
-                fullWidth
-                id="email"
-                placeholder="your@email.com"
-                name="email"
-                autoComplete="email"
-                variant="outlined"
-                inputRef={emailRef}
-                error={emailError}
-                helperText={emailErrorMessage}
-                color={passwordError ? "error" : "primary"}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel htmlFor="firstName">Phone Number</FormLabel>
-              <TextField
-                autoComplete="phoneNumber"
-                name="phoneNumber"
-                inputRef={phoneNumberRef}
-                required
-                fullWidth
-                id="phoneNumber"
-                placeholder="+46 793784891"
-                error={phoneNumberError}
-                helperText={phoneNumberErrorMessage}
-                color={phoneNumberError ? "error" : "primary"}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel htmlFor="password">Password</FormLabel>
-              <TextField
-                required
-                fullWidth
-                name="password"
-                placeholder="••••••"
-                type="password"
-                inputRef={passwordRef}
-                id="password"
-                autoComplete="new-password"
-                variant="outlined"
-                error={passwordError}
-                helperText={passwordErrorMessage}
-                color={passwordError ? "error" : "primary"}
-              />
-            </FormControl>
-            <FormControlLabel
-              control={<Checkbox value="allowExtraEmails" color="primary" />}
-              label="I want to receive updates via email."
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              onClick={validateInputs}>
-              Sign up
-            </Button>
-          </Box>
-          <Divider>
-            <Typography sx={{ color: "text.secondary" }}>or</Typography>
-          </Divider>
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            <Button
-              fullWidth
-              variant="outlined"
-              onClick={() => alert("Sign up with Google")}
-              startIcon={<GoogleIcon />}>
-              Sign up with Google
-            </Button>
-            <Button
-              fullWidth
-              variant="outlined"
-              onClick={() => alert("Sign up with Facebook")}
-              startIcon={<FacebookIcon />}>
-              Sign up with Facebook
-            </Button>
-            <Typography sx={{ textAlign: "center" }}>
-              Already have an account?{" "}
-              <Link
-                href="/auth/login"
-                variant="body2"
-                sx={{ alignSelf: "center" }}>
-                Sign in
-              </Link>
-            </Typography>
-          </Box>
-        </Card>
-      </AuthContainer>
-    </div>
+    <section className="relative z-10 overflow-hidden pt-36 pb-16 md:pb-20 lg:pt-[180px] lg:pb-28">
+      <div className="container">
+        <div className="-mx-4 flex flex-wrap">
+          <div className="w-full px-4">
+            <div className="shadow-three dark:bg-dark mx-auto max-w-[500px] rounded-sm bg-white px-6 py-10 sm:p-[60px]">
+              <h3 className="mb-3 text-center text-2xl font-bold text-black sm:text-3xl dark:text-white">
+                Create your account
+              </h3>
+              <p className="text-body-color mb-11 text-center text-base font-medium">
+                It’s totally free and super easy
+              </p>
+
+              <button className="mb-6 w-full rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base text-body-color hover:border-primary hover:bg-primary/5 hover:text-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:hover:border-primary dark:hover:bg-primary/5 dark:hover:text-primary dark:shadow-two">
+                Sign in with Google
+              </button>
+              <button className="mb-6 w-full rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base text-body-color hover:border-primary hover:bg-primary/5 hover:text-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:hover:border-primary dark:hover:bg-primary/5 dark:hover:text-primary dark:shadow-two">
+                Sign in with GitHub
+              </button>
+
+              <div className="mb-8 flex items-center justify-center">
+                <span className="bg-body-color/50 hidden h-[1px] w-full max-w-[60px] sm:block"></span>
+                <p className="text-body-color w-full px-5 text-center text-base font-medium">
+                  Or, register with your email
+                </p>
+                <span className="bg-body-color/50 hidden h-[1px] w-full max-w-[60px] sm:block"></span>
+              </div>
+
+              <form onSubmit={handleSubmit}>
+                <div className="mb-6">
+                  <label
+                    htmlFor="fullName"
+                    className="mb-3 block text-sm text-dark dark:text-white">
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    id="fullName"
+                    name="fullName"
+                    value={formData.fullName}
+                    onChange={handleChange}
+                    placeholder="Enter your full name"
+                    className="w-full rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-hidden transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:focus:shadow-none"
+                  />
+                  {errors.fullName && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.fullName}
+                    </p>
+                  )}
+                </div>
+
+                <div className="mb-6">
+                  <label
+                    htmlFor="email"
+                    className="mb-3 block text-sm text-dark dark:text-white">
+                    Work Email
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="Enter your email"
+                    className="w-full rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-hidden transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:focus:shadow-none"
+                  />
+                  {errors.email && (
+                    <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                  )}
+                </div>
+
+                <div className="mb-6">
+                  <label
+                    htmlFor="phoneNumber"
+                    className="mb-3 block text-sm text-dark dark:text-white">
+                    Phone Number
+                  </label>
+                  <input
+                    type="tel"
+                    id="phoneNumber"
+                    name="phoneNumber"
+                    value={formData.phoneNumber}
+                    onChange={handleChange}
+                    placeholder="Enter your phone number"
+                    className="w-full rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-hidden transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:focus:shadow-none"
+                  />
+                  {errors.phoneNumber && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.phoneNumber}
+                    </p>
+                  )}
+                </div>
+
+                <div className="mb-6">
+                  <label
+                    htmlFor="password"
+                    className="mb-3 block text-sm text-dark dark:text-white">
+                    Your Password
+                  </label>
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    placeholder="Enter your password"
+                    className="w-full rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-hidden transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:focus:shadow-none"
+                  />
+                  {errors.password && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.password}
+                    </p>
+                  )}
+                </div>
+
+                <div className="mb-6 flex">
+                  <label
+                    htmlFor="terms"
+                    className="text-body-color flex text-sm font-medium">
+                    <input
+                      type="checkbox"
+                      id="terms"
+                      required
+                      className="mr-2 mt-1"
+                    />
+                    <span>
+                      By creating an account, you agree to the{" "}
+                      <a href="#0" className="text-primary hover:underline">
+                        Terms
+                      </a>{" "}
+                      and{" "}
+                      <a href="#0" className="text-primary hover:underline">
+                        Privacy Policy
+                      </a>
+                      .
+                    </span>
+                  </label>
+                </div>
+
+                <div className="mb-6">
+                  <button
+                    type="submit"
+                    className="bg-primary hover:bg-primary/90 w-full rounded-xs px-9 py-4 text-base font-medium text-white duration-300 shadow-submit dark:shadow-submit-dark">
+                    Sign up
+                  </button>
+                </div>
+              </form>
+
+              <p className="text-body-color text-center text-base font-medium">
+                Already using Startup?{" "}
+                <Link
+                  href="/auth/login"
+                  className="text-primary hover:underline">
+                  Sign in
+                </Link>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Background SVG */}
+      <div className="absolute top-0 left-0 z-[-1]">
+        {/* ... same SVG code you provided ... */}
+      </div>
+    </section>
   );
-}
+};
+
+export default Register;

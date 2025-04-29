@@ -1,23 +1,9 @@
 "use client";
+
 import React, { useState, useEffect, useRef } from "react";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import Divider from "@mui/material/Divider";
-import FormLabel from "@mui/material/FormLabel";
-import FormControl from "@mui/material/FormControl";
-import Link from "@mui/material/Link";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
-import {
-  GoogleIcon,
-  FacebookIcon,
-  SitemarkIcon,
-} from "../../../components/customIcons";
 import axios from "axios";
 import { validateEmail, validatePassword } from "../validate";
-import Card from "../../../components/cards/authCard";
-import AuthContainer from "../../../components/cards/authContainer";
+import Link from "next/link";
 
 export default function Login() {
   const [emailError, setEmailError] = useState(false);
@@ -25,7 +11,6 @@ export default function Login() {
   const [passwordError, setPasswordError] = useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
 
-  // Using Effect to Reset Errors After Hydration
   useEffect(() => {
     setEmailError(false);
     setPasswordError(false);
@@ -39,13 +24,11 @@ export default function Login() {
     const password = passwordRef.current?.value || "";
     let isValid = true;
 
-    //email check
     const emailValidation = validateEmail(email);
     setEmailError(!!emailValidation);
     setEmailErrorMessage(emailValidation);
     if (emailValidation) isValid = false;
 
-    //password check
     const passwordValidation = validatePassword(password);
     setPasswordError(!!passwordValidation);
     setPasswordErrorMessage(passwordValidation);
@@ -55,7 +38,6 @@ export default function Login() {
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    console.log("Form submitted!");
     event.preventDefault();
     if (!validateInputs()) return;
 
@@ -67,7 +49,7 @@ export default function Login() {
 
     try {
       const response = await axios.post(
-        "http://localhost:3001/auth/login",
+        "http://localhost:3002/auth/login",
         userData
       );
       console.log(response.data);
@@ -78,86 +60,111 @@ export default function Login() {
   };
 
   return (
-    <div className="h-screen w-screen flex items-center justify-center bg-gray-900">
-      <div className="">
-        <AuthContainer direction="column" justifyContent="space-between">
-          <CssBaseline enableColorScheme />
-          <Card variant="outlined">
-            <Typography
-              component="h1"
-              variant="h4"
-              sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}>
-              Sign in
-            </Typography>
-            <Box
-              component="form"
-              onSubmit={handleSubmit}
-              sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-              <FormControl>
-                <FormLabel htmlFor="email">Email</FormLabel>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  placeholder="your@email.com"
+    <section className="relative z-10 overflow-hidden pt-36 pb-16 md:pb-20 lg:pt-[180px] lg:pb-28">
+      <div className="container">
+        <div className="flex justify-center">
+          <div className="shadow-three dark:bg-dark max-w-[500px] rounded-sm bg-white px-6 py-10 sm:p-[60px]">
+            <h3 className="mb-3 text-center text-2xl font-bold text-black sm:text-3xl dark:text-white">
+              Sign in to your account
+            </h3>
+            <p className="text-body-color mb-8 text-center text-base font-medium">
+              Login to your account for a faster checkout.
+            </p>
+
+            {/* Google Sign In */}
+            <button
+              onClick={() => alert("Sign in with Google")}
+              className="mb-4 w-full border border-stroke bg-[#f8f8f8] px-6 py-3 rounded-xs text-base text-body-color hover:border-primary hover:bg-primary/5 hover:text-primary transition-all duration-300">
+              Sign in with Google
+            </button>
+
+            {/* Divider */}
+            <div className="mb-6 flex items-center justify-center">
+              <span className="hidden sm:block w-full max-w-[70px] h-[1px] bg-body-color/50"></span>
+              <p className="px-5 text-center text-base text-body-color font-medium">
+                Or, sign in with your email
+              </p>
+              <span className="hidden sm:block w-full max-w-[70px] h-[1px] bg-body-color/50"></span>
+            </div>
+
+            {/* Form */}
+            <form onSubmit={handleSubmit}>
+              <div className="mb-6">
+                <label
+                  htmlFor="email"
+                  className="mb-2 block text-sm text-dark dark:text-white">
+                  Email
+                </label>
+                <input
+                  type="email"
                   name="email"
-                  autoComplete="email"
-                  inputRef={emailRef}
-                  error={emailError}
-                  helperText={emailErrorMessage}
+                  id="email"
+                  placeholder="Enter your email"
+                  ref={emailRef}
+                  className={`w-full rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base text-body-color transition-all duration-300 focus:border-primary outline-none dark:bg-[#2C303B] ${
+                    emailError ? "border-red-500" : "border-stroke"
+                  }`}
                 />
-              </FormControl>
-              <FormControl>
-                <FormLabel htmlFor="password">Password</FormLabel>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  placeholder="••••••"
+                {emailError && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {emailErrorMessage}
+                  </p>
+                )}
+              </div>
+
+              <div className="mb-6">
+                <label
+                  htmlFor="password"
+                  className="mb-2 block text-sm text-dark dark:text-white">
+                  Password
+                </label>
+                <input
                   type="password"
-                  inputRef={passwordRef}
+                  name="password"
                   id="password"
-                  autoComplete="current-password"
-                  error={passwordError}
-                  helperText={passwordErrorMessage}
+                  placeholder="Enter your password"
+                  ref={passwordRef}
+                  className={`w-full rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base text-body-color transition-all duration-300 focus:border-primary outline-none dark:bg-[#2C303B] ${
+                    passwordError ? "border-red-500" : "border-stroke"
+                  }`}
                 />
-              </FormControl>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                onClick={validateInputs}>
-                Sign in
-              </Button>
-            </Box>
-            <Divider>
-              <Typography sx={{ color: "text.secondary" }}>or</Typography>
-            </Divider>
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-              <Button
-                fullWidth
-                variant="outlined"
-                startIcon={<GoogleIcon />}
-                onClick={() => alert("Sign in with Google")}>
-                Sign in with Google
-              </Button>
-              <Button
-                fullWidth
-                variant="outlined"
-                startIcon={<FacebookIcon />}
-                onClick={() => alert("Sign in with Facebook")}>
-                Sign in with Facebook
-              </Button>
-              <Typography sx={{ textAlign: "center" }}>
-                Don't have an account?{" "}
-                <Link href="/auth/register" variant="body2">
-                  Sign up
-                </Link>
-              </Typography>
-            </Box>
-          </Card>
-        </AuthContainer>
+                {passwordError && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {passwordErrorMessage}
+                  </p>
+                )}
+              </div>
+
+              <div className="mb-6 flex items-center justify-between text-sm">
+                <label className="flex items-center gap-2 text-body-color">
+                  <input type="checkbox" className="h-4 w-4" />
+                  Keep me signed in
+                </label>
+                <a href="#" className="text-primary hover:underline">
+                  Forgot Password?
+                </a>
+              </div>
+
+              <div className="mb-4">
+                <button
+                  type="submit"
+                  className="w-full rounded-xs bg-primary px-6 py-3 text-base font-medium text-white transition-all duration-300 hover:bg-primary/90">
+                  Sign in
+                </button>
+              </div>
+            </form>
+
+            <p className="text-body-color text-center text-base font-medium">
+              Don’t have an account?{" "}
+              <Link
+                href="/auth/register"
+                className="text-primary hover:underline">
+                Sign up
+              </Link>
+            </p>
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
