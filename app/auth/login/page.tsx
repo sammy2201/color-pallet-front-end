@@ -1,23 +1,24 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { validateEmail, validatePassword } from "../validate";
-import Link from "next/link";
+import { Metadata } from "next";
 
-export default function Login() {
+const SigninPage = () => {
   const [emailError, setEmailError] = useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = useState("");
   const [passwordError, setPasswordError] = useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
 
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+
   useEffect(() => {
     setEmailError(false);
     setPasswordError(false);
   }, []);
-
-  const emailRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
 
   const validateInputs = () => {
     const email = emailRef.current?.value || "";
@@ -52,10 +53,11 @@ export default function Login() {
         "http://localhost:3002/auth/login",
         userData
       );
-      console.log(response.data);
+      console.log("Login success:", response.data);
+      // handle successful login (redirect, token storage, etc.)
     } catch (error) {
-      console.error("Error login user:", error);
-      alert("Failed to login. Please try again.");
+      console.error("Login failed:", error);
+      alert("Login failed. Please check your credentials.");
     }
   };
 
@@ -67,98 +69,71 @@ export default function Login() {
             <h3 className="mb-3 text-center text-2xl font-bold text-black sm:text-3xl dark:text-white">
               Sign in to your account
             </h3>
-            <p className="text-body-color mb-8 text-center text-base font-medium">
+            <p className="text-body-color mb-11 text-center text-base font-medium">
               Login to your account for a faster checkout.
             </p>
 
-            {/* Google Sign In */}
-            <button
-              onClick={() => alert("Sign in with Google")}
-              className="mb-4 w-full border border-stroke bg-[#f8f8f8] px-6 py-3 rounded-xs text-base text-body-color hover:border-primary hover:bg-primary/5 hover:text-primary transition-all duration-300">
-              Sign in with Google
-            </button>
-
-            {/* Divider */}
-            <div className="mb-6 flex items-center justify-center">
-              <span className="hidden sm:block w-full max-w-[70px] h-[1px] bg-body-color/50"></span>
-              <p className="px-5 text-center text-base text-body-color font-medium">
-                Or, sign in with your email
-              </p>
-              <span className="hidden sm:block w-full max-w-[70px] h-[1px] bg-body-color/50"></span>
-            </div>
-
-            {/* Form */}
             <form onSubmit={handleSubmit}>
-              <div className="mb-6">
+              <div className="mb-8">
                 <label
                   htmlFor="email"
-                  className="mb-2 block text-sm text-dark dark:text-white">
-                  Email
+                  className="text-dark mb-3 block text-sm dark:text-white">
+                  Your Email
                 </label>
                 <input
+                  ref={emailRef}
                   type="email"
                   name="email"
-                  id="email"
-                  placeholder="Enter your email"
-                  ref={emailRef}
-                  className={`w-full rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base text-body-color transition-all duration-300 focus:border-primary outline-none dark:bg-[#2C303B] ${
-                    emailError ? "border-red-500" : "border-stroke"
-                  }`}
+                  placeholder="Enter your Email"
+                  className={`w-full rounded-xs border px-6 py-3 text-base outline-none transition-all duration-300 ${
+                    emailError
+                      ? "border-red-500"
+                      : "border-stroke bg-[#f8f8f8] dark:border-transparent dark:bg-[#2C303B]"
+                  } dark:text-body-color-dark`}
                 />
                 {emailError && (
-                  <p className="text-red-500 text-sm mt-1">
+                  <p className="text-red-500 text-sm mt-2">
                     {emailErrorMessage}
                   </p>
                 )}
               </div>
 
-              <div className="mb-6">
+              <div className="mb-8">
                 <label
                   htmlFor="password"
-                  className="mb-2 block text-sm text-dark dark:text-white">
-                  Password
+                  className="text-dark mb-3 block text-sm dark:text-white">
+                  Your Password
                 </label>
                 <input
+                  ref={passwordRef}
                   type="password"
                   name="password"
-                  id="password"
-                  placeholder="Enter your password"
-                  ref={passwordRef}
-                  className={`w-full rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base text-body-color transition-all duration-300 focus:border-primary outline-none dark:bg-[#2C303B] ${
-                    passwordError ? "border-red-500" : "border-stroke"
-                  }`}
+                  placeholder="Enter your Password"
+                  className={`w-full rounded-xs border px-6 py-3 text-base outline-none transition-all duration-300 ${
+                    passwordError
+                      ? "border-red-500"
+                      : "border-stroke bg-[#f8f8f8] dark:border-transparent dark:bg-[#2C303B]"
+                  } dark:text-body-color-dark`}
                 />
                 {passwordError && (
-                  <p className="text-red-500 text-sm mt-1">
+                  <p className="text-red-500 text-sm mt-2">
                     {passwordErrorMessage}
                   </p>
                 )}
               </div>
 
-              <div className="mb-6 flex items-center justify-between text-sm">
-                <label className="flex items-center gap-2 text-body-color">
-                  <input type="checkbox" className="h-4 w-4" />
-                  Keep me signed in
-                </label>
-                <a href="#" className="text-primary hover:underline">
-                  Forgot Password?
-                </a>
-              </div>
-
-              <div className="mb-4">
+              <div className="mb-6">
                 <button
                   type="submit"
-                  className="w-full rounded-xs bg-primary px-6 py-3 text-base font-medium text-white transition-all duration-300 hover:bg-primary/90">
+                  className="shadow-submit dark:shadow-submit-dark bg-primary hover:bg-primary/90 flex w-full items-center justify-center rounded-xs px-9 py-4 text-base font-medium text-white duration-300">
                   Sign in
                 </button>
               </div>
             </form>
 
             <p className="text-body-color text-center text-base font-medium">
-              Don’t have an account?{" "}
-              <Link
-                href="/auth/register"
-                className="text-primary hover:underline">
+              Don’t you have an account?{" "}
+              <Link href="/signup" className="text-primary hover:underline">
                 Sign up
               </Link>
             </p>
@@ -167,4 +142,6 @@ export default function Login() {
       </div>
     </section>
   );
-}
+};
+
+export default SigninPage;

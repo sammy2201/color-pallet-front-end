@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import "../styles/globals.css";
 import HomePageNavbar from "../components/navbar/homePageNavbar";
+import { Inter } from "next/font/google";
+
+const inter = Inter({ subsets: ["latin"] });
+
 export const metadata: Metadata = {
   title: "Tone set",
   description: "Color pallete for website and apps",
@@ -16,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className={`bg-[#FCFCFC] dark:bg-black ${inter.className}`}>
         <HomePageNavbar />
         {children}
       </body>
