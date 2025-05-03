@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "../styles/globals.css";
-import HomePageNavbar from "../components/navbar/homePageNavbar";
+import HomePageNavbar from "../components/navbar/HomePageNavbar";
 import { Inter } from "next/font/google";
 import { Providers } from "./providers";
 

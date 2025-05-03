@@ -4,8 +4,8 @@ import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import AuthCard from "../../../components/cards/authCard";
-import InputField from "../../../components/cards/authInputField";
+import AuthCard from "../../../components/cards/AuthCard";
+import InputField from "../../../components/cards/AuthInputField";
 import {
   validateEmail,
   validatePassword,

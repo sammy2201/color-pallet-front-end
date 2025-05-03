@@ -3,8 +3,8 @@
 import { useState, useRef } from "react";
 import axios from "axios";
 import Link from "next/link";
-import AuthCard from "../../../components/cards/authCard";
-import InputField from "../../../components/cards/authInputField";
+import AuthCard from "../../../components/cards/AuthCard";
+import InputField from "../../../components/cards/AuthInputField";
 import { validateEmail, validatePassword } from "../validate";
 
 const SigninPage = () => {

@@ -1,16 +1,20 @@
 import styles from "../styles/page.module.css";
 import "../styles/globals.css";
-import HomeHeader from "@/components/div/homeHeader";
+import HomeHeader from "@/components/div/HomeHeader";
 import Footer from "../components/footer";
-import Features from "../components/features/mainFeatures";
+import MainFeatures from "../components/mainFeatures/MainFeatures";
+import YetToComeFeatures from "../components/yetToComeFeatures/YetToComeFeatures";
+// import Pricing from "@/components/pricing";
+
 export default function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
         <HomeHeader />
-        <Features />
+        <MainFeatures />
+        <YetToComeFeatures />
+        {/* <Pricing /> */}
         {/*
-        Yet to Come 
         How It Works
         Simple and Affordable Pricing 
         Contact Us

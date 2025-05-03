@@ -1,8 +1,8 @@
 import SectionTitle from "../title/SectionTitle";
-import featuresData from "./featuresData";
-import SingleFeature from "./singleFeature";
+import featuresData from "./FeaturesData";
+import SingleFeature from "../singleFeature/SingleFeature";
 
-const Features = () => {
+const MainFeatures = () => {
   return (
     <>
       <section id="features" className="py-16 md:py-20 lg:py-28">
@@ -19,4 +19,4 @@ const Features = () => {
   );
 };
 
-export default Features;
+export default MainFeatures;
