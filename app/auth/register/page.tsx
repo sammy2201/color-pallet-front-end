@@ -1,20 +1,20 @@
 "use client";
 
-import React, { useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import axios from "axios";
-import { Metadata } from "next";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import AuthCard from "../../../components/cards/authCard";
+import InputField from "../../../components/cards/authInputField";
 import {
   validateEmail,
   validatePassword,
   validateName,
   validatePhoneNumber,
-} from "../validate"; // adjust the path if needed
+} from "../validate";
 
-const Register = () => {
+const RegisterPage = () => {
   const router = useRouter();
-
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -71,7 +71,7 @@ const Register = () => {
         payload
       );
       if (response.status === 201) {
-        router.push("/auth/login");
+        router.push("/signin");
       } else {
         alert("Unexpected response. Check backend logs.");
       }
@@ -83,171 +83,78 @@ const Register = () => {
 
   return (
     <section className="relative z-10 overflow-hidden pt-36 pb-16 md:pb-20 lg:pt-[180px] lg:pb-28">
-      <div className="container">
-        <div className="-mx-4 flex flex-wrap">
-          <div className="w-full px-4">
-            <div className="shadow-three dark:bg-dark mx-auto max-w-[500px] rounded-sm bg-white px-6 py-10 sm:p-[60px]">
-              <h3 className="mb-3 text-center text-2xl font-bold text-black sm:text-3xl dark:text-white">
-                Create your account
-              </h3>
-              <p className="text-body-color mb-11 text-center text-base font-medium">
-                It’s totally free and super easy
-              </p>
-
-              <button className="mb-6 w-full rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base text-body-color hover:border-primary hover:bg-primary/5 hover:text-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:hover:border-primary dark:hover:bg-primary/5 dark:hover:text-primary dark:shadow-two">
-                Sign in with Google
-              </button>
-              <button className="mb-6 w-full rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base text-body-color hover:border-primary hover:bg-primary/5 hover:text-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:hover:border-primary dark:hover:bg-primary/5 dark:hover:text-primary dark:shadow-two">
-                Sign in with GitHub
-              </button>
-
-              <div className="mb-8 flex items-center justify-center">
-                <span className="bg-body-color/50 hidden h-[1px] w-full max-w-[60px] sm:block"></span>
-                <p className="text-body-color w-full px-5 text-center text-base font-medium">
-                  Or, register with your email
-                </p>
-                <span className="bg-body-color/50 hidden h-[1px] w-full max-w-[60px] sm:block"></span>
-              </div>
-
-              <form onSubmit={handleSubmit}>
-                <div className="mb-6">
-                  <label
-                    htmlFor="fullName"
-                    className="mb-3 block text-sm text-dark dark:text-white">
-                    Full Name
-                  </label>
-                  <input
-                    type="text"
-                    id="fullName"
-                    name="fullName"
-                    value={formData.fullName}
-                    onChange={handleChange}
-                    placeholder="Enter your full name"
-                    className="w-full rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-hidden transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:focus:shadow-none"
-                  />
-                  {errors.fullName && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.fullName}
-                    </p>
-                  )}
-                </div>
-
-                <div className="mb-6">
-                  <label
-                    htmlFor="email"
-                    className="mb-3 block text-sm text-dark dark:text-white">
-                    Work Email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="Enter your email"
-                    className="w-full rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-hidden transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:focus:shadow-none"
-                  />
-                  {errors.email && (
-                    <p className="text-red-500 text-sm mt-1">{errors.email}</p>
-                  )}
-                </div>
-
-                <div className="mb-6">
-                  <label
-                    htmlFor="phoneNumber"
-                    className="mb-3 block text-sm text-dark dark:text-white">
-                    Phone Number
-                  </label>
-                  <input
-                    type="tel"
-                    id="phoneNumber"
-                    name="phoneNumber"
-                    value={formData.phoneNumber}
-                    onChange={handleChange}
-                    placeholder="Enter your phone number"
-                    className="w-full rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-hidden transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:focus:shadow-none"
-                  />
-                  {errors.phoneNumber && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.phoneNumber}
-                    </p>
-                  )}
-                </div>
-
-                <div className="mb-6">
-                  <label
-                    htmlFor="password"
-                    className="mb-3 block text-sm text-dark dark:text-white">
-                    Your Password
-                  </label>
-                  <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    placeholder="Enter your password"
-                    className="w-full rounded-xs border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-hidden transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:focus:shadow-none"
-                  />
-                  {errors.password && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.password}
-                    </p>
-                  )}
-                </div>
-
-                <div className="mb-6 flex">
-                  <label
-                    htmlFor="terms"
-                    className="text-body-color flex text-sm font-medium">
-                    <input
-                      type="checkbox"
-                      id="terms"
-                      required
-                      className="mr-2 mt-1"
-                    />
-                    <span>
-                      By creating an account, you agree to the{" "}
-                      <a href="#0" className="text-primary hover:underline">
-                        Terms
-                      </a>{" "}
-                      and{" "}
-                      <a href="#0" className="text-primary hover:underline">
-                        Privacy Policy
-                      </a>
-                      .
-                    </span>
-                  </label>
-                </div>
-
-                <div className="mb-6">
-                  <button
-                    type="submit"
-                    className="bg-primary hover:bg-primary/90 w-full rounded-xs px-9 py-4 text-base font-medium text-white duration-300 shadow-submit dark:shadow-submit-dark">
-                    Sign up
-                  </button>
-                </div>
-              </form>
-
-              <p className="text-body-color text-center text-base font-medium">
-                Already using Startup?{" "}
-                <Link
-                  href="/auth/login"
-                  className="text-primary hover:underline">
-                  Sign in
-                </Link>
-              </p>
+      <div className="container flex justify-center">
+        <AuthCard
+          title="Create your account"
+          subtitle="It’s totally free and super easy">
+          <form onSubmit={handleSubmit}>
+            <InputField
+              type="text"
+              name="fullName"
+              label="Full Name"
+              placeholder="Enter your full name"
+              value={formData.fullName}
+              onChange={handleChange}
+              error={errors.fullName}
+            />
+            <InputField
+              type="email"
+              name="email"
+              label="Work Email"
+              placeholder="Enter your email"
+              value={formData.email}
+              onChange={handleChange}
+              error={errors.email}
+            />
+            <InputField
+              type="tel"
+              name="phoneNumber"
+              label="Phone Number"
+              placeholder="Enter your phone number"
+              value={formData.phoneNumber}
+              onChange={handleChange}
+              error={errors.phoneNumber}
+            />
+            <InputField
+              type="password"
+              name="password"
+              label="Password"
+              placeholder="Enter your password"
+              value={formData.password}
+              onChange={handleChange}
+              error={errors.password}
+            />
+            <div className="mb-6 flex">
+              <input type="checkbox" required className="mr-2 mt-1" />
+              <span className="text-sm text-body-color">
+                I agree to the{" "}
+                <a href="#" className="text-primary hover:underline">
+                  Terms
+                </a>{" "}
+                and{" "}
+                <a href="#" className="text-primary hover:underline">
+                  Privacy Policy
+                </a>
+              </span>
             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Background SVG */}
-      <div className="absolute top-0 left-0 z-[-1]">
-        {/* ... same SVG code you provided ... */}
+            <div className="mb-6">
+              <button
+                type="submit"
+                className="bg-primary hover:bg-primary/90 w-full rounded-xs px-9 py-4 text-base font-medium text-white duration-300 shadow-submit dark:shadow-submit-dark">
+                Sign up
+              </button>
+            </div>
+          </form>
+          <p className="text-body-color text-center text-base font-medium">
+            Already have an account?{" "}
+            <Link href="/signin" className="text-primary hover:underline">
+              Sign in
+            </Link>
+          </p>
+        </AuthCard>
       </div>
     </section>
   );
 };
 
-export default Register;
+export default RegisterPage;

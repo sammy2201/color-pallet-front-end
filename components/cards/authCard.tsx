@@ -1,38 +1,25 @@
 "use client";
-import React, { ReactNode } from "react";
-import { styled } from "@mui/material/styles";
-import MuiCard from "@mui/material/Card";
 
-const StyledCard = styled(MuiCard)(({ theme }) => ({
-  display: "flex",
-  flexDirection: "column",
-  alignSelf: "center",
-  width: "100%",
-  overflowY: "auto",
-  padding: theme.spacing(4),
-  gap: theme.spacing(2),
-  margin: "auto",
-  boxShadow:
-    "hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px",
-  [theme.breakpoints.up("sm")]: {
-    width: "450px",
-  },
-  ...(theme.applyStyles?.("dark", {
-    boxShadow:
-      "hsla(220, 30%, 5%, 0.5) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.08) 0px 15px 35px -5px",
-  }) || {}),
-}));
+import React from "react";
 
-interface CardProps {
+interface AuthCardProps {
+  title: string;
+  subtitle: string;
   children: React.ReactNode;
-  variant?: "outlined" | "elevation";
-  className?: string;
 }
 
-export default function Card({ children, variant, className }: CardProps) {
+const AuthCard: React.FC<AuthCardProps> = ({ title, subtitle, children }) => {
   return (
-    <div className={className}>
-      <StyledCard variant={variant}>{children}</StyledCard>
+    <div className="shadow-three dark:bg-dark max-w-[500px] rounded-sm bg-white px-6 py-10 sm:p-[60px]">
+      <h3 className="mb-3 text-center text-2xl font-bold text-black sm:text-3xl dark:text-white">
+        {title}
+      </h3>
+      <p className="text-body-color mb-11 text-center text-base font-medium">
+        {subtitle}
+      </p>
+      {children}
     </div>
   );
-}
+};
+
+export default AuthCard;
