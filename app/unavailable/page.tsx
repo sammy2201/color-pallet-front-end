@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
-import HomePageNavbar from "@/components/navbar/HomePageNavbar";
+import Link from "next/link";
+import HomePageNavbar from "../../components/navbar/HomePageNavbar";
 
 const Unavailable = () => {
   return (
@@ -11,11 +12,11 @@ const Unavailable = () => {
         <p className="text-gray-600 dark:text-gray-300 mt-2">
           We are trying to make this available as soon as possible.
         </p>
-        <a href="/">
+        <Link href="/">
           <button className="mt-4 rounded bg-primary px-4 py-2 text-white hover:bg-primary/90 cursor-pointer transition">
             Go Back To Home
           </button>
-        </a>
+        </Link>
       </div>
     </div>
   );
