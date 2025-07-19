@@ -17,7 +17,7 @@ export default function Home() {
         <MainFeatures />
         <YetToComeFeatures />
         <Pricing />
-        <Contact />
+        {/* <Contact /> */}
         <Footer />
       </main>
     </div>

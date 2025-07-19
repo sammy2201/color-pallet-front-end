@@ -1,4 +1,4 @@
-import { Feature } from "../../types/feature";
+import { Feature } from "../../../types/feature";
 
 const featuresData: Feature[] = [
   {
@@ -41,7 +41,7 @@ const featuresData: Feature[] = [
     ),
     title: "Personalized Results",
     paragraph:
-      "Tailored color palettes designed specifically for your industry and brand personality",
+      "Tailored color palettes and UI templates designed specifically for your industry and brand personality",
   },
   {
     id: 2,
@@ -88,7 +88,7 @@ const featuresData: Feature[] = [
     ),
     title: "High-Quality Palettes",
     paragraph:
-      "We consider harmony, contrast, emotional tone, and accessibility to ensure your colors don’t just look good — they work.",
+      "We consider harmony, contrast, emotional tone, and accessibility to ensure your colors don’t just look good: they work.",
   },
   {
     id: 4,
@@ -103,7 +103,7 @@ const featuresData: Feature[] = [
     ),
     title: "AI-Powered by OpenAI",
     paragraph:
-      "Using the power of OpenAI, our system understands your brand’s values, industry, and tone to generate aesthetic, purpose-driven color palettes — in seconds.",
+      "Using the power of OpenAI, our system understands your brand’s values, industry, and tone to generate aesthetic, purpose-driven color palettes in seconds.",
   },
   {
     id: 5,
@@ -123,7 +123,7 @@ const featuresData: Feature[] = [
     ),
     title: "24/7 Support Available",
     paragraph:
-      "Our team is available around the clock to assist you — whether you're stuck, curious, or just need a helping hand.",
+      "Our team is available around the clock to assist you; whether you're stuck, curious, or just need a helping hand.",
   },
 ];
 export default featuresData;

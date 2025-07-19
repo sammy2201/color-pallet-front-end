@@ -5,18 +5,22 @@ const HomeHeader = () => {
     <>
       <section
         id="home"
-        className="relative z-10 overflow-hidden bg-white pb-16 pt-[120px] dark:bg-gray-dark md:pb-[120px] md:pt-[150px] xl:pb-[160px] xl:pt-[180px] 2xl:pb-[200px] 2xl:pt-[210px]">
+        className="relative z-10 overflow-hidden bg-white pb-16 pt-[120px] dark:bg-gray-dark md:pb-[120px] md:pt-[150px] xl:pb-[160px] xl:pt-[180px] 2xl:pb-[200px] 2xl:pt-[210px] min-h-screen ">
         <div className="container">
           <div className="-mx-4 flex flex-wrap">
             <div className="w-full px-4">
               <div className="mx-auto max-w-[800px] text-center">
                 <h1 className="mb-5 text-3xl font-bold leading-tight text-black dark:text-white sm:text-4xl sm:leading-tight md:text-5xl md:leading-tight">
-                  An application that helps you choose a color palette
+                  An application that helps you set the tone for your project
                 </h1>
                 <p className="mb-12 text-base leading-relaxed! text-body-color dark:text-body-color-dark sm:text-lg md:text-xl">
-                  Tone set is a free and easy-to-use application that helps you
-                  create the perfect color palette for your website, powered by
-                  intuitive color theory and real-time previews.
+                  Tone Set is a free, user-friendly tool designed to help you
+                  create precise and effective color palettes for your website.
+                  Built on principles of color theory, it offers real-time
+                  previews to ensure design consistency and visual harmony. In
+                  addition, we’re developing customizable UI templates similar
+                  to Figma, but tailored specifically to your brand and business
+                  requirements for faster, design-ready deployment.
                 </p>
                 <div className="flex flex-col items-center justify-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
                   <Link
