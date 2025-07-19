@@ -1,4 +1,4 @@
-import SectionTitle from "../title/SectionTitle";
+import SectionTitle from "../../home/title/SectionTitle";
 import featuresData from "./FeaturesData";
 import SingleFeature from "../singleFeature/SingleFeature";
 

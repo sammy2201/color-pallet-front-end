@@ -1,24 +1,23 @@
 import styles from "../styles/page.module.css";
 import "../styles/globals.css";
-import HomeHeader from "@/components/div/HomeHeader";
+import HomeHeader from "@/components/home/div/HomeHeader";
 import Footer from "../components/footer";
-import MainFeatures from "../components/mainFeatures/MainFeatures";
-import YetToComeFeatures from "../components/yetToComeFeatures/YetToComeFeatures";
-// import Pricing from "@/components/pricing";
+import MainFeatures from "../components/home/mainFeatures/MainFeatures";
+import YetToComeFeatures from "../components/home/yetToComeFeatures/YetToComeFeatures";
+import Pricing from "../components/home/pricing/Pricing";
+import Contact from "../components/contact/Contact";
+import HomePageNavbar from "../components/navbar/HomePageNavbar";
 
 export default function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
+        <HomePageNavbar />
         <HomeHeader />
         <MainFeatures />
         <YetToComeFeatures />
-        {/* <Pricing /> */}
-        {/*
-        How It Works
-        Simple and Affordable Pricing 
-        Contact Us
-        Footer */}
+        <Pricing />
+        <Contact />
         <Footer />
       </main>
     </div>

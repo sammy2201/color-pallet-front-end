@@ -37,8 +37,8 @@ const featuresData: Feature[] = [
           d="M4 4V8L8 8V12L12 12V16L16 16V20L20 20"
           stroke="#3A59D1"
           strokeWidth="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </svg>
     ),
